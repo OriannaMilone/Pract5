@@ -80,10 +80,10 @@ public class Graph<V>{
 		int[] distancia = new int[adjacencyList.size()];
 		int[] ant = new int[adjacencyList.size()];
 		inicializar(distancia, ant, v1);
+
 		while (!conjunto.contains((int) v2)) {
 			menor = infinito;
-			//calcular el mejor candidato a vertice intermedio
-
+			
 			for (int i = 0; i < distancia.length; i++) {
 				if(distancia[i]<menor&&!conjunto.contains(i+1) ){
 					menor = distancia[i];
@@ -98,13 +98,21 @@ public class Graph<V>{
 				}
 			}
 		}
-		System.out.println("-----------------");
-		return construirCamino(ant,(int) v1,(int) v2); // Esto código hay que modificarlo.
+		System.out.println("---------");
+		return construirCamino(ant,(int) v1,(int) v2);
 	}
+	
+	/**
+	 *
+	 * @param ant array con con los vertices intermedios para llegar al cada vertice.
+	 * @param a es el vertice origen.
+	 * @param b es el vertice destino.
+	 * @return lista con la secuencia de vé rtices del camino má s corto.
+	 */
 
 	public List<Integer> construirCamino(int[] ant, int a, int b){
 		if(a == b){
-			return new ArrayList<>(Arrays.asList(a));//Arrays.asList(a);
+			return new ArrayList<>(Arrays.asList(a));
 		}else {
 			List<Integer> l = construirCamino(ant, a, ant[b-1]);
 			System.out.println(b);
@@ -112,6 +120,7 @@ public class Graph<V>{
 			return l;
 		}
 	}
+	
 	public void inicializar(int[] distancia,int[] ant, V v1) throws Exception {
 		conjunto.clear();
 		conjunto.add((int) v1);
