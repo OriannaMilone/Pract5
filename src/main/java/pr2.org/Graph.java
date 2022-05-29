@@ -73,64 +73,57 @@ public class Graph<V>{
          * @ param v2 el vé rtice destino.
          * @ return lista con la secuencia de vé rtices del camino má s corto
          * entre ` v1` y ` v2`
-         */
+	 * */
+	public List<Integer> shortestPath(V v1, V v2) throws Exception {
+		int menor = infinito;
+		int Vmin = 0;
+		int[] distancia = new int[adjacencyList.size()];
+		int[] ant = new int[adjacencyList.size()];
+		inicializar(distancia, ant, v1);
+		while (!conjunto.contains((int) v2)) {
+			menor = infinito;
+			//calcular el mejor candidato a vertice intermedio
 
-	public List<V> shortestPath(V v1, V v2) throws Exception {
-                int[][] distancia = new int[2][adjacencyList.size()];
+			for (int i = 0; i < distancia.length; i++) {
+				if(distancia[i]<menor&&!conjunto.contains(i+1) ){
+					menor = distancia[i];
+					Vmin = i+1;
+				}
+			}
+			conjunto.add(Vmin);
+			for(V i: adjacencyList.get(Vmin)){
+				if (menor<distancia[(int) i-1]){
+					distancia[(int) i-1] = menor;
+					ant[(int)i-1] = Vmin;
+				}
+			}
+		}
+		System.out.println("-----------------");
+		return construirCamino(ant,(int) v1,(int) v2); // Esto código hay que modificarlo.
+	}
 
-                //empezamos con v1 metido en el conjunto debido a que es el inicial
-                Set<V> conjunto = new HashSet<>(Arrays.asList(v1));
+	public List<Integer> construirCamino(int[] ant, int a, int b){
+		if(a == b){
+			return new ArrayList<>(Arrays.asList(a));//Arrays.asList(a);
+		}else {
+			List<Integer> l = construirCamino(ant, a, ant[b-1]);
+			System.out.println(b);
+			System.out.println(l.add(b));
+			return l;
+		}
+	}
+	public void inicializar(int[] distancia,int[] ant, V v1) throws Exception {
+		conjunto.clear();
+		conjunto.add((int) v1);
+		for (int j = 0; j < adjacencyList.size(); j++) {
 
-                //Inicializamos el array de distancia
+			ant[j] = (int) v1;
+			distancia[j] = infinito;
+		}
+		for(V v: obtainAdjacents(v1)){
+			distancia[(int) v - 1] = 1;
+		}
 
-                for (int j = 0; j < adjacencyList.size(); j++) {
-                        distancia[0][j] = 0;//infinito;
-                        distancia[1][j] = 1;
-                }
+	}
 
-                //Bien inicializado
-                /*for(int i = 0; i<2; i++){
-                        for(int j = 0; j<adjacencyList.size(); j++){
-                                if(j == adjacencyList.size()-1){
-                                        System.out.println(distancia[i][j]);
-                                }else System.out.print(distancia[i][j] + " ");
-                        }
-                }*/
-/*
-                int menor = infinito;
-                int contador = 0;
-                V puntero = v1;
-                List<V> lista = new ArrayList<V>(obtainAdjacents(puntero));
-                //bucle for
-                while(!puntero.equals(v2)) {
-                        for (int i = 0; i < lista.size(); i++) {
-                                System.out.println(lista.get(i));
-                                if (!conjunto.contains(lista.get(i))) {
-                                        //System.out.println("entra");
-                                        conjunto.add(lista.get(i));
-                                        puntero = lista.get(i);
-                                        contador++;
-                                        for (int j = 0; j <= adjacencyList.size(); j++) {
-                                                if (lista.get(i).equals(Integer.valueOf(j))) {
-                                                        //System.out.println(lista.get(i));
-                                                        distancia[0][j - 1] += contador;//1;
-                                                }
-                                        }
-                                }
-
-                                lista = new ArrayList<V>(obtainAdjacents(puntero));
-                                for (int k = 0; k < 2; k++) {
-                                        for (int j = 0; j < adjacencyList.size(); j++) {
-                                                if (j == adjacencyList.size() - 1) {
-                                                        System.out.println(distancia[k][j]);
-                                                } else System.out.print(distancia[k][j] + " ");
-                                        }
-                                }
-                                System.out.println("puntero: " + puntero);
-                        }
-                }
-                System.out.println("contador: " + contador);
-
-                return null; // Esto código hay que modificarlo.
-        }
-}*/
+}
