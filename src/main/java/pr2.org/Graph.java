@@ -9,70 +9,71 @@ import java.util.stream.Collectors;
 public class Graph<V>{
         private Map<V, Set<V>> adjacencyList = new HashMap<>();
 
-        //private final int infinito = 2147483647;
+	List<Integer> conjunto = new ArrayList<>();
+	private final int infinito = 2147483647;
 
         /**
          * Añade el vértice v al grafo.
          * @ param v vértice a añadir.
-         * @ return true si no estaba anteriormente y false en caso contrario.
-         */
+	 * @ return true si no estaba anteriormente y false en caso contrario.
+	 */
 
-        public boolean addVertex(V v){
-                if(adjacencyList.containsKey(v)){ return false;
-                }else
-                        adjacencyList.put(v, new HashSet<V>());
-                        return true;
-        }
+	public boolean addVertex(V v){
+		if(adjacencyList.containsKey(v)){ return false;
+		}else
+			adjacencyList.put(v, new HashSet<V>());
+		return true;
+	}
 
-        /**
-         * Añade un arco entre los vértices ` v1` y ` v2` al grafo. En
-         * caso de que no exista alguno de los vé rtices, lo añade
-         * también.
-         * @ param v1 el origen del arco.
-         * @ param v2 el destino del arco.
-         * @ return ` true` si no existí a el arco y ` false` en caso contrario.
-         */
-	
-        public boolean addEdge(V v1, V v2){
-                if(!adjacencyList.get(v1).contains(v2) && !adjacencyList.get(v2).contains(v1)){
-                        adjacencyList.get(v1).add(v2);
-                        adjacencyList.get(v2).add(v1);
-                        return true;
-                }else return false;
-        }
+	/**
+	 * Añade un arco entre los vértices ` v1` y ` v2` al grafo. En
+	 * caso de que no exista alguno de los vé rtices, lo añade
+	 * también.
+	 * @ param v1 el origen del arco.
+	 * @ param v2 el destino del arco.
+	 * @ return ` true` si no existí a el arco y ` false` en caso contrario.
+	 */
 
-        public Set<V> obtainAdjacents(V v) throws Exception{
-                return adjacencyList.get(v);
-        }
+	public boolean addEdge(V v1, V v2){
+		if(!adjacencyList.get(v1).contains(v2) && !adjacencyList.get(v2).contains(v1)){
+			adjacencyList.get(v1).add(v2);
+			adjacencyList.get(v2).add(v1);
+			return true;
+		}else return false;
+	}
 
-        public boolean containsVertex(V v){
-                return adjacencyList.keySet().contains(v);
-        }
+	public Set<V> obtainAdjacents(V v) throws Exception{
+		return adjacencyList.get(v);
+	}
 
-        /**
-         * Método toString() 
-         * @ return una cadena de caracteres con la lista de adyacencia.
-         */
+	public boolean containsVertex(V v){
+		return adjacencyList.keySet().contains(v);
+	}
 
-        @Override
-        public String toString(){
-                StringBuilder mensaje = new StringBuilder();
-                for(V v: adjacencyList.keySet()){
-                        mensaje.append(v.toString() + ": ");
-                        for(V conect: adjacencyList.get(v)){
-                                mensaje.append(conect.toString() + " ");
-                        }
-                }
-                return mensaje.toString();
-        }
+	/**
+	 * Método toString() 
+	 * @ return una cadena de caracteres con la lista de adyacencia.
+	 */
 
-        /**
-         * Obtiene, en caso de que exista, el camino má s corto entre
-         * ` v1` y ` v2`. En caso contrario, devuelve ` null`.
-         * @ param v1 el vé rtice origen.
-         * @ param v2 el vé rtice destino.
-         * @ return lista con la secuencia de vé rtices del camino má s corto
-         * entre ` v1` y ` v2`
+	@Override
+	public String toString(){
+		StringBuilder mensaje = new StringBuilder();
+		for(V v: adjacencyList.keySet()){
+			mensaje.append(v.toString() + ": ");
+			for(V conect: adjacencyList.get(v)){
+				mensaje.append(conect.toString() + " ");
+			}
+		}
+		return mensaje.toString();
+	}
+
+	/**
+	 * Obtiene, en caso de que exista, el camino má s corto entre
+	 * ` v1` y ` v2`. En caso contrario, devuelve ` null`.
+	 * @ param v1 el vé rtice origen.
+	 * @ param v2 el vé rtice destino.
+	 * @ return lista con la secuencia de vé rtices del camino má s corto
+	 * entre ` v1` y ` v2`
 	 * */
 	public List<Integer> shortestPath(V v1, V v2) throws Exception {
 		int menor = infinito;
@@ -83,7 +84,7 @@ public class Graph<V>{
 
 		while (!conjunto.contains((int) v2)) {
 			menor = infinito;
-			
+
 			for (int i = 0; i < distancia.length; i++) {
 				if(distancia[i]<menor&&!conjunto.contains(i+1) ){
 					menor = distancia[i];
@@ -101,7 +102,7 @@ public class Graph<V>{
 		System.out.println("---------");
 		return construirCamino(ant,(int) v1,(int) v2);
 	}
-	
+
 	/**
 	 *
 	 * @param ant array con con los vertices intermedios para llegar al cada vertice.
