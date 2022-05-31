@@ -94,7 +94,7 @@ public class Graph<V>{
 			conjunto.add(Vmin);
 			for(V i: adjacencyList.get(Vmin)){
 				if (menor<distancia[(int) i-1]){
-					distancia[(int) i-1] = menor;
+					distancia[(int) i-1] = menor + 1;
 					ant[(int)i-1] = Vmin;
 				}
 			}
